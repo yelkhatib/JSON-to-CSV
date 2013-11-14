@@ -6,6 +6,7 @@ More details <a href="http://yelkhatib.tumblr.com/post/51147153670/converting-js
 
 ## Prerequisites
 You will need the <a href="https://github.com/substack/js-traverse">traverse</a> package.
+    npm install traverse
 
 ## Usage:
     node convertJsonToCsv.js /path/to/input/file.json
