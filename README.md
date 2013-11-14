@@ -4,6 +4,9 @@ This is a stand alone NodeJS script that flattens a JSON file to CSV format. It 
 
 More details <a href="http://yelkhatib.tumblr.com/post/51147153670/converting-json-to-csv">here</a>.
 
+## Prerequisites
+You will need the <a href="https://github.com/substack/js-traverse">traverse</a> package.
+
 ## Usage:
     node convertJsonToCsv.js /path/to/input/file.json
 
