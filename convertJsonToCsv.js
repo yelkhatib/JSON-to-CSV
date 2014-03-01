@@ -1,7 +1,7 @@
 var fs = require("fs"),
     traverse = require('traverse');
 
-const sep = ',';
+const sep = ',';		// TO-EDIT: separator for the output file
 
 function isNumber(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
@@ -17,8 +17,8 @@ function isCollection(k) {
 function parseResults(filename) {
   fs.readFile(filename, 'utf-8', function (err, fileContents) {
     if (err) throw err;
-    var parsedJson = JSON.parse(fileContents);
-	
+    var parsedJson = JSON.parse(fileContents);		// TO-EDIT: (optional) add node to convert
+    												// e.g. ... = JSON.parse(fileContents).note;
 	var numberOfRows = 0,
 		numberOfCols = 0,
 		collections = new Array(),
@@ -26,7 +26,7 @@ function parseResults(filename) {
 
 	traverse(parsedJson).forEach(function (x) {
 		if (this.isRoot) {
-			numberOfRows = this.keys.length;
+			numberOfRows = this.keys.length - 1;
 		} else {
 			if (!this.isChild) {
 				if (this.keys) {
@@ -81,13 +81,12 @@ function parseResults(filename) {
 
 	var outputHeader = "";
 	outputWidth = 0;
-	for (var j=0; j<numberOfCols; j++) {
+	for (var j=0; j<=numberOfCols; j++) {
 		if (csvHeader[j]){
 			outputHeader += csvHeader[j]+sep;
 			outputWidth++;
 		}
 	}
-	outputHeader += csvHeader[j];
 	console.log(outputHeader);
 	for (var i=0; i<=numberOfRows; i++) {
 		var outputRow = "";
@@ -97,8 +96,10 @@ function parseResults(filename) {
 				leaf = "";
 			outputRow += leaf + sep;
 		}
-		console.log(outputRow+leaves[i*outputWidth + j]);
+		console.log(outputRow);
 	}
+
+	console.dir(leaves);
 	
   });
 }
