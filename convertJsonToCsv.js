@@ -17,7 +17,7 @@ function isCollection(k) {
 function parseResults(filename) {
   fs.readFile(filename, 'utf-8', function (err, fileContents) {
     if (err) throw err;
-    var parsedJson = JSON.parse(fileContents).tests;
+    var parsedJson = JSON.parse(fileContents);
 	
 	var numberOfRows = 0,
 		numberOfCols = 0,
@@ -41,7 +41,7 @@ function parseResults(filename) {
 				numberOfCols = this.level;
 		}
 	});
-	var sumOfCollections = 0;
+	var sumOfCollections = 1;	// default number of collections
 	for (key in collections) {
 		sumOfCollections += collections[key];
 	}
@@ -51,7 +51,7 @@ function parseResults(filename) {
 	    pathsArr = new Array(),
 	    csvHeader = new Array(numberOfCols+1);
 	    csv = new Array(numberOfRows);
-	for (var i=0; i<numberOfRows; i++) {
+	for (var i=0; i<=numberOfRows; i++) {
 		csv[i] = new Array(numberOfCols+1);
 	}
 
@@ -80,26 +80,26 @@ function parseResults(filename) {
 	}, []);
 
 	var outputHeader = "";
-	for (var j=0; j<=numberOfCols; j++) {
-		if (csvHeader[j])
+	outputWidth = 0;
+	for (var j=0; j<numberOfCols; j++) {
+		if (csvHeader[j]){
 			outputHeader += csvHeader[j]+sep;
-	}
-	console.log(outputHeader);
-	
-	var lastRowValues = new Array(numberOfCols);
-	for (var i=0; i<numberOfRows; i++) {
-		var outputRow = "";
-		for (var j=1; j<=numberOfCols; j++) {
-			if (csv[i][j]) {
-				lastRowValues[j] = csv[i][j];
-			} else {
-				csv[i][j] = lastRowValues[j];
-			}
-			outputRow += csv[i][j]+sep;
+			outputWidth++;
 		}
-		console.log(outputRow);
 	}
-	//console.dir(leaves);
+	outputHeader += csvHeader[j];
+	console.log(outputHeader);
+	for (var i=0; i<=numberOfRows; i++) {
+		var outputRow = "";
+		for (var j=0; j<outputWidth; j++) {
+			leaf = leaves[i*outputWidth + j];
+			if( (typeof leaf == "object") && (leaf !== null) )
+				leaf = "";
+			outputRow += leaf + sep;
+		}
+		console.log(outputRow+leaves[i*outputWidth + j]);
+	}
+	
   });
 }
 
